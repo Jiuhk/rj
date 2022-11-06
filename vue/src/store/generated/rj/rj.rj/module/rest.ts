@@ -18,12 +18,21 @@ export interface ProtobufAny {
  */
 export type RjParams = object;
 
+export interface RjQueryGetSectionIdResponse {
+  SectionId?: RjSectionId;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface RjQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: RjParams;
+}
+
+export interface RjSectionId {
+  /** @format uint64 */
+  sectionId?: string;
 }
 
 export interface RpcStatus {
@@ -240,6 +249,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<RjQueryParamsResponse, RpcStatus>({
       path: `/rj/rj/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySectionId
+   * @summary Queries a SectionId by index.
+   * @request GET:/rj/rj/section_id
+   */
+  querySectionId = (params: RequestParams = {}) =>
+    this.request<RjQueryGetSectionIdResponse, RpcStatus>({
+      path: `/rj/rj/section_id`,
       method: "GET",
       format: "json",
       ...params,

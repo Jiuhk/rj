@@ -113,33 +113,119 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+type QueryGetSectionIdRequest struct {
+}
+
+func (m *QueryGetSectionIdRequest) Reset()         { *m = QueryGetSectionIdRequest{} }
+func (m *QueryGetSectionIdRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetSectionIdRequest) ProtoMessage()    {}
+func (*QueryGetSectionIdRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4ebf06b5b001cb49, []int{2}
+}
+func (m *QueryGetSectionIdRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetSectionIdRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetSectionIdRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetSectionIdRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetSectionIdRequest.Merge(m, src)
+}
+func (m *QueryGetSectionIdRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetSectionIdRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetSectionIdRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetSectionIdRequest proto.InternalMessageInfo
+
+type QueryGetSectionIdResponse struct {
+	SectionId SectionId `protobuf:"bytes,1,opt,name=SectionId,proto3" json:"SectionId"`
+}
+
+func (m *QueryGetSectionIdResponse) Reset()         { *m = QueryGetSectionIdResponse{} }
+func (m *QueryGetSectionIdResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetSectionIdResponse) ProtoMessage()    {}
+func (*QueryGetSectionIdResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4ebf06b5b001cb49, []int{3}
+}
+func (m *QueryGetSectionIdResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetSectionIdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetSectionIdResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetSectionIdResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetSectionIdResponse.Merge(m, src)
+}
+func (m *QueryGetSectionIdResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetSectionIdResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetSectionIdResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetSectionIdResponse proto.InternalMessageInfo
+
+func (m *QueryGetSectionIdResponse) GetSectionId() SectionId {
+	if m != nil {
+		return m.SectionId
+	}
+	return SectionId{}
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "rj.rj.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "rj.rj.QueryParamsResponse")
+	proto.RegisterType((*QueryGetSectionIdRequest)(nil), "rj.rj.QueryGetSectionIdRequest")
+	proto.RegisterType((*QueryGetSectionIdResponse)(nil), "rj.rj.QueryGetSectionIdResponse")
 }
 
 func init() { proto.RegisterFile("rj/query.proto", fileDescriptor_4ebf06b5b001cb49) }
 
 var fileDescriptor_4ebf06b5b001cb49 = []byte{
-	// 274 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x8f, 0x41, 0x4a, 0xc4, 0x30,
-	0x18, 0x85, 0x5b, 0x71, 0x66, 0x11, 0xa9, 0x03, 0x71, 0x04, 0x2d, 0x12, 0xa5, 0x1b, 0x45, 0xa1,
-	0x3f, 0x33, 0xde, 0xa0, 0x27, 0xd0, 0x59, 0xb8, 0x70, 0x23, 0xa9, 0x84, 0xd2, 0xe0, 0xf4, 0xcf,
-	0x24, 0x19, 0x71, 0xb6, 0x9e, 0x40, 0xf0, 0x52, 0xb3, 0x1c, 0x70, 0xe3, 0x4a, 0xa4, 0xf5, 0x20,
-	0xd2, 0x24, 0x08, 0xa2, 0xbb, 0xf0, 0xde, 0xf7, 0xfe, 0x97, 0x47, 0x76, 0xb5, 0x84, 0xc5, 0x52,
-	0xe8, 0x55, 0xae, 0x34, 0x5a, 0xa4, 0x03, 0x2d, 0x73, 0x2d, 0xd3, 0x71, 0x85, 0x15, 0x3a, 0x05,
-	0xfa, 0x97, 0x37, 0xd3, 0xa3, 0x0a, 0xb1, 0x7a, 0x10, 0xc0, 0x55, 0x0d, 0xbc, 0x69, 0xd0, 0x72,
-	0x5b, 0x63, 0x63, 0x82, 0x7b, 0x7e, 0x8f, 0x66, 0x8e, 0x06, 0x4a, 0x6e, 0x84, 0xbf, 0x09, 0x8f,
-	0x93, 0x52, 0x58, 0x3e, 0x01, 0xc5, 0xab, 0xba, 0x71, 0x70, 0x60, 0x47, 0x5a, 0x82, 0xe2, 0x9a,
-	0xcf, 0x43, 0x38, 0x1b, 0x13, 0x7a, 0xdd, 0x47, 0xae, 0x9c, 0x38, 0x13, 0x8b, 0xa5, 0x30, 0x36,
-	0x2b, 0xc8, 0xde, 0x2f, 0xd5, 0x28, 0x6c, 0x8c, 0xa0, 0x17, 0x64, 0xe8, 0xc3, 0x07, 0xf1, 0x49,
-	0x7c, 0xb6, 0x33, 0x4d, 0x72, 0xf7, 0xeb, 0xdc, 0x63, 0xc5, 0xf6, 0xfa, 0xe3, 0x38, 0x9a, 0x05,
-	0x64, 0x7a, 0x47, 0x06, 0xee, 0x06, 0xbd, 0x21, 0x43, 0x0f, 0xd0, 0xc3, 0xc0, 0xff, 0x6d, 0x4c,
-	0xd3, 0xff, 0x2c, 0x5f, 0x9b, 0xed, 0x3f, 0xbf, 0x7d, 0xbd, 0x6e, 0x8d, 0x68, 0x02, 0x5a, 0xc2,
-	0xcf, 0x80, 0xe2, 0x74, 0xdd, 0xb2, 0x78, 0xd3, 0xb2, 0xf8, 0xb3, 0x65, 0xf1, 0x4b, 0xc7, 0xa2,
-	0x4d, 0xc7, 0xa2, 0xf7, 0x8e, 0x45, 0xb7, 0x89, 0x96, 0xf0, 0xd4, 0x93, 0x76, 0xa5, 0x84, 0x29,
-	0x87, 0x6e, 0xea, 0xe5, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x3f, 0x59, 0xd9, 0x16, 0x74, 0x01,
-	0x00, 0x00,
+	// 351 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x91, 0x4f, 0x4b, 0x02, 0x41,
+	0x18, 0xc6, 0x77, 0x23, 0x85, 0x26, 0xcc, 0x1a, 0x0d, 0x74, 0x89, 0x55, 0xf6, 0x52, 0x14, 0xec,
+	0x8b, 0xd6, 0x27, 0xf0, 0x12, 0xdd, 0xd2, 0xa0, 0x43, 0x97, 0x18, 0x75, 0x58, 0x76, 0xc8, 0x9d,
+	0x75, 0x66, 0x8c, 0xbc, 0xf6, 0x09, 0x82, 0xbe, 0x94, 0x74, 0x12, 0xba, 0x74, 0x8a, 0xd0, 0x3e,
+	0x48, 0xec, 0xcc, 0xf8, 0x27, 0xb2, 0xdb, 0xf2, 0x3c, 0xbf, 0xf7, 0x79, 0xde, 0x77, 0x07, 0xed,
+	0x09, 0x06, 0xc3, 0x11, 0x15, 0xe3, 0x30, 0x15, 0x5c, 0x71, 0x9c, 0x13, 0x2c, 0x14, 0xcc, 0x2b,
+	0x47, 0x3c, 0xe2, 0x5a, 0x81, 0xec, 0xcb, 0x98, 0xde, 0x51, 0xc4, 0x79, 0xf4, 0x40, 0x81, 0xa4,
+	0x31, 0x90, 0x24, 0xe1, 0x8a, 0xa8, 0x98, 0x27, 0xd2, 0xba, 0xa7, 0x3d, 0x2e, 0x07, 0x5c, 0x42,
+	0x97, 0x48, 0x6a, 0x32, 0xe1, 0xb1, 0xd1, 0xa5, 0x8a, 0x34, 0x20, 0x25, 0x51, 0x9c, 0x68, 0xd8,
+	0xb2, 0x45, 0xc1, 0x20, 0x25, 0x82, 0x0c, 0x16, 0xc3, 0x25, 0xc1, 0x40, 0xd2, 0x5e, 0x86, 0xdc,
+	0xc7, 0x7d, 0x23, 0x06, 0x65, 0x84, 0xdb, 0x59, 0xce, 0xb5, 0x26, 0x3b, 0x74, 0x38, 0xa2, 0x52,
+	0x05, 0x2d, 0x54, 0xfa, 0xa5, 0xca, 0x94, 0x27, 0x92, 0xe2, 0x33, 0x94, 0x37, 0x89, 0x15, 0xb7,
+	0xee, 0x9e, 0xec, 0x36, 0x0b, 0xa1, 0x3e, 0x25, 0x34, 0x58, 0x6b, 0x7b, 0xf2, 0x59, 0x73, 0x3a,
+	0x16, 0x09, 0x3c, 0x54, 0xd1, 0x19, 0x97, 0x54, 0xdd, 0x98, 0xd6, 0xab, 0xfe, 0x22, 0xbf, 0x8d,
+	0xaa, 0x1b, 0x3c, 0xdb, 0x72, 0x81, 0x76, 0x96, 0xa2, 0x2d, 0xda, 0xb7, 0x45, 0x4b, 0xdd, 0x76,
+	0xad, 0xc0, 0xe6, 0x9b, 0x8b, 0x72, 0x3a, 0x13, 0xdf, 0xa2, 0xbc, 0x59, 0x08, 0x57, 0xed, 0xd8,
+	0xdf, 0x0b, 0x3d, 0x6f, 0x93, 0x65, 0x16, 0x08, 0x0e, 0x9f, 0xdf, 0xbf, 0x5f, 0xb7, 0x8a, 0xb8,
+	0x00, 0x82, 0xc1, 0xf2, 0x2f, 0xe2, 0x78, 0x6d, 0x2f, 0x5c, 0x5b, 0x9f, 0xdf, 0x70, 0xa2, 0x57,
+	0xff, 0x1f, 0xb0, 0x35, 0x55, 0x5d, 0x53, 0xc2, 0x07, 0xb6, 0x66, 0xf5, 0x36, 0xad, 0xe3, 0xc9,
+	0xcc, 0x77, 0xa7, 0x33, 0xdf, 0xfd, 0x9a, 0xf9, 0xee, 0xcb, 0xdc, 0x77, 0xa6, 0x73, 0xdf, 0xf9,
+	0x98, 0xfb, 0xce, 0x5d, 0x41, 0x30, 0x78, 0xca, 0x68, 0x35, 0x4e, 0xa9, 0xec, 0xe6, 0xf5, 0x2b,
+	0x9e, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0xb7, 0xb1, 0xc2, 0x84, 0x64, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -156,6 +242,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a SectionId by index.
+	SectionId(ctx context.Context, in *QueryGetSectionIdRequest, opts ...grpc.CallOption) (*QueryGetSectionIdResponse, error)
 }
 
 type queryClient struct {
@@ -175,10 +263,21 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) SectionId(ctx context.Context, in *QueryGetSectionIdRequest, opts ...grpc.CallOption) (*QueryGetSectionIdResponse, error) {
+	out := new(QueryGetSectionIdResponse)
+	err := c.cc.Invoke(ctx, "/rj.rj.Query/SectionId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a SectionId by index.
+	SectionId(context.Context, *QueryGetSectionIdRequest) (*QueryGetSectionIdResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -187,6 +286,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (*UnimplementedQueryServer) SectionId(ctx context.Context, req *QueryGetSectionIdRequest) (*QueryGetSectionIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SectionId not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -211,6 +313,24 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_SectionId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetSectionIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).SectionId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rj.rj.Query/SectionId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).SectionId(ctx, req.(*QueryGetSectionIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "rj.rj.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -218,6 +338,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "SectionId",
+			Handler:    _Query_SectionId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -280,6 +404,62 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetSectionIdRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetSectionIdRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetSectionIdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetSectionIdResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetSectionIdResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetSectionIdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.SectionId.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -307,6 +487,26 @@ func (m *QueryParamsResponse) Size() (n int) {
 	var l int
 	_ = l
 	l = m.Params.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetSectionIdRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryGetSectionIdResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.SectionId.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
@@ -426,6 +626,139 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetSectionIdRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetSectionIdRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetSectionIdRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetSectionIdResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetSectionIdResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetSectionIdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SectionId", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.SectionId.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
