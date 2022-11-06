@@ -1,0 +1,12 @@
+syntax = "proto3";
+package rj.rj;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "rj/x/rj/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
