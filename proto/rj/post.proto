@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rj.rj;
+
+option go_package = "rj/x/rj/types";
+
+message Post {
+  uint64 postId = 1; 
+  uint64 topicId = 2; 
+  string content = 3; 
+  string creator = 4; 
+  string createdAt = 5; 
+  string updatedAt = 6; 
+  
+}
+

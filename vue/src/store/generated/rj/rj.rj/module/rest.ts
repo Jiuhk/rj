@@ -18,9 +18,36 @@ export interface ProtobufAny {
  */
 export type RjParams = object;
 
+export interface RjPost {
+  /** @format uint64 */
+  postId?: string;
+
+  /** @format uint64 */
+  topicId?: string;
+  content?: string;
+  creator?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface RjPostId {
   /** @format uint64 */
   postId?: string;
+}
+
+export interface RjQueryAllPostResponse {
+  post?: RjPost[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
 }
 
 export interface RjQueryAllSectionResponse {
@@ -55,6 +82,10 @@ export interface RjQueryAllTopicResponse {
 
 export interface RjQueryGetPostIdResponse {
   PostId?: RjPostId;
+}
+
+export interface RjQueryGetPostResponse {
+  post?: RjPost;
 }
 
 export interface RjQueryGetSectionIdResponse {
@@ -386,6 +417,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<RjQueryParamsResponse, RpcStatus>({
       path: `/rj/rj/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPostAll
+   * @summary Queries a list of Post items.
+   * @request GET:/rj/rj/post
+   */
+  queryPostAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RjQueryAllPostResponse, RpcStatus>({
+      path: `/rj/rj/post`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPost
+   * @summary Queries a Post by index.
+   * @request GET:/rj/rj/post/{postId}
+   */
+  queryPost = (postId: string, params: RequestParams = {}) =>
+    this.request<RjQueryGetPostResponse, RpcStatus>({
+      path: `/rj/rj/post/${postId}`,
       method: "GET",
       format: "json",
       ...params,

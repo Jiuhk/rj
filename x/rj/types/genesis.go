@@ -15,6 +15,7 @@ func DefaultGenesis() *GenesisState {
 		PostId:      nil,
 		SectionList: []Section{},
 		TopicList:   []Topic{},
+		PostList:    []Post{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -42,6 +43,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for topic")
 		}
 		topicIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in post
+	postIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.PostList {
+		index := string(PostKey(elem.PostId))
+		if _, ok := postIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for post")
+		}
+		postIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

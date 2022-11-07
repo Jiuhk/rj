@@ -47,6 +47,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						TopicId: 1,
 					},
 				},
+				PostList: []types.Post{
+					{
+						PostId: 0,
+					},
+					{
+						PostId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -74,6 +82,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						TopicId: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated post",
+			genState: &types.GenesisState{
+				PostList: []types.Post{
+					{
+						PostId: 0,
+					},
+					{
+						PostId: 0,
 					},
 				},
 			},

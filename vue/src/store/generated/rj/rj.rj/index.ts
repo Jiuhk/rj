@@ -1,6 +1,7 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Params } from "./module/types/rj/params"
+import { Post } from "./module/types/rj/post"
 import { PostId } from "./module/types/rj/post_id"
 import { Section } from "./module/types/rj/section"
 import { SectionId } from "./module/types/rj/section_id"
@@ -8,7 +9,7 @@ import { Topic } from "./module/types/rj/topic"
 import { TopicId } from "./module/types/rj/topic_id"
 
 
-export { Params, PostId, Section, SectionId, Topic, TopicId };
+export { Params, Post, PostId, Section, SectionId, Topic, TopicId };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -54,9 +55,12 @@ const getDefaultState = () => {
 				SectionAll: {},
 				Topic: {},
 				TopicAll: {},
+				Post: {},
+				PostAll: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
+						Post: getStructure(Post.fromPartial({})),
 						PostId: getStructure(PostId.fromPartial({})),
 						Section: getStructure(Section.fromPartial({})),
 						SectionId: getStructure(SectionId.fromPartial({})),
@@ -137,6 +141,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.TopicAll[JSON.stringify(params)] ?? {}
+		},
+				getPost: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Post[JSON.stringify(params)] ?? {}
+		},
+				getPostAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.PostAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -351,6 +367,54 @@ export default {
 				return getters['getTopicAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryTopicAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryPost({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryPost( key.postId)).data
+				
+					
+				commit('QUERY', { query: 'Post', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPost', payload: { options: { all }, params: {...key},query }})
+				return getters['getPost']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryPost API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryPostAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryPostAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryPostAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'PostAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPostAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getPostAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryPostAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
