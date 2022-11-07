@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rj.rj;
+
+option go_package = "rj/x/rj/types";
+
+message TopicPost {
+  uint64 topicId = 1; 
+  repeated uint64 posts = 2; 
+  
+}
+

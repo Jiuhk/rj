@@ -80,6 +80,21 @@ export interface RjQueryAllSectionTopicResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface RjQueryAllTopicPostResponse {
+  topicPost?: RjTopicPost[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface RjQueryAllTopicResponse {
   topic?: RjTopic[];
 
@@ -117,6 +132,10 @@ export interface RjQueryGetSectionTopicResponse {
 
 export interface RjQueryGetTopicIdResponse {
   TopicId?: RjTopicId;
+}
+
+export interface RjQueryGetTopicPostResponse {
+  topicPost?: RjTopicPost;
 }
 
 export interface RjQueryGetTopicResponse {
@@ -165,6 +184,12 @@ export interface RjTopicId {
   topicId?: string;
 }
 
+export interface RjTopicPost {
+  /** @format uint64 */
+  topicId?: string;
+  posts?: string[];
+}
+
 export interface RpcStatus {
   /** @format int32 */
   code?: number;
@@ -209,13 +234,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -461,7 +479,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -519,7 +536,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -577,7 +593,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -619,7 +634,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -658,6 +672,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryTopicId = (params: RequestParams = {}) =>
     this.request<RjQueryGetTopicIdResponse, RpcStatus>({
       path: `/rj/rj/topic_id`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTopicPostAll
+   * @summary Queries a list of TopicPost items.
+   * @request GET:/rj/rj/topic_post
+   */
+  queryTopicPostAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RjQueryAllTopicPostResponse, RpcStatus>({
+      path: `/rj/rj/topic_post`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTopicPost
+   * @summary Queries a TopicPost by index.
+   * @request GET:/rj/rj/topic_post/{topicId}
+   */
+  queryTopicPost = (topicId: string, params: RequestParams = {}) =>
+    this.request<RjQueryGetTopicPostResponse, RpcStatus>({
+      path: `/rj/rj/topic_post/${topicId}`,
       method: "GET",
       format: "json",
       ...params,
