@@ -9,6 +9,7 @@ import "rj/post_id.proto";
 import "rj/section.proto";
 import "rj/topic.proto";
 import "rj/post.proto";
+import "rj/section_topic.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "rj/x/rj/types";
@@ -22,5 +23,6 @@ message GenesisState {
   repeated Section sectionList = 5 [(gogoproto.nullable) = false];
   repeated Topic topicList = 6 [(gogoproto.nullable) = false];
   repeated Post postList = 7 [(gogoproto.nullable) = false];
+  repeated SectionTopic sectionTopicList = 8 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

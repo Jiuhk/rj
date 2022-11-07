@@ -5,11 +5,12 @@ import { Post } from "./module/types/rj/post"
 import { PostId } from "./module/types/rj/post_id"
 import { Section } from "./module/types/rj/section"
 import { SectionId } from "./module/types/rj/section_id"
+import { SectionTopic } from "./module/types/rj/section_topic"
 import { Topic } from "./module/types/rj/topic"
 import { TopicId } from "./module/types/rj/topic_id"
 
 
-export { Params, Post, PostId, Section, SectionId, Topic, TopicId };
+export { Params, Post, PostId, Section, SectionId, SectionTopic, Topic, TopicId };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -57,6 +58,8 @@ const getDefaultState = () => {
 				TopicAll: {},
 				Post: {},
 				PostAll: {},
+				SectionTopic: {},
+				SectionTopicAll: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
@@ -64,6 +67,7 @@ const getDefaultState = () => {
 						PostId: getStructure(PostId.fromPartial({})),
 						Section: getStructure(Section.fromPartial({})),
 						SectionId: getStructure(SectionId.fromPartial({})),
+						SectionTopic: getStructure(SectionTopic.fromPartial({})),
 						Topic: getStructure(Topic.fromPartial({})),
 						TopicId: getStructure(TopicId.fromPartial({})),
 						
@@ -153,6 +157,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.PostAll[JSON.stringify(params)] ?? {}
+		},
+				getSectionTopic: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SectionTopic[JSON.stringify(params)] ?? {}
+		},
+				getSectionTopicAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SectionTopicAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -415,6 +431,54 @@ export default {
 				return getters['getPostAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryPostAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySectionTopic({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.querySectionTopic( key.sectionId)).data
+				
+					
+				commit('QUERY', { query: 'SectionTopic', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySectionTopic', payload: { options: { all }, params: {...key},query }})
+				return getters['getSectionTopic']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySectionTopic API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySectionTopicAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.querySectionTopicAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.querySectionTopicAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'SectionTopicAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySectionTopicAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getSectionTopicAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySectionTopicAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

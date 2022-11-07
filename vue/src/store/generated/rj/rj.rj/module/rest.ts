@@ -65,6 +65,21 @@ export interface RjQueryAllSectionResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface RjQueryAllSectionTopicResponse {
+  sectionTopic?: RjSectionTopic[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface RjQueryAllTopicResponse {
   topic?: RjTopic[];
 
@@ -96,6 +111,10 @@ export interface RjQueryGetSectionResponse {
   section?: RjSection;
 }
 
+export interface RjQueryGetSectionTopicResponse {
+  sectionTopic?: RjSectionTopic;
+}
+
 export interface RjQueryGetTopicIdResponse {
   TopicId?: RjTopicId;
 }
@@ -121,6 +140,12 @@ export interface RjSection {
 export interface RjSectionId {
   /** @format uint64 */
   sectionId?: string;
+}
+
+export interface RjSectionTopic {
+  /** @format uint64 */
+  sectionId?: string;
+  topics?: string[];
 }
 
 export interface RjTopic {
@@ -533,6 +558,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySectionId = (params: RequestParams = {}) =>
     this.request<RjQueryGetSectionIdResponse, RpcStatus>({
       path: `/rj/rj/section_id`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySectionTopicAll
+   * @summary Queries a list of SectionTopic items.
+   * @request GET:/rj/rj/section_topic
+   */
+  querySectionTopicAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RjQueryAllSectionTopicResponse, RpcStatus>({
+      path: `/rj/rj/section_topic`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySectionTopic
+   * @summary Queries a SectionTopic by index.
+   * @request GET:/rj/rj/section_topic/{sectionId}
+   */
+  querySectionTopic = (sectionId: string, params: RequestParams = {}) =>
+    this.request<RjQueryGetSectionTopicResponse, RpcStatus>({
+      path: `/rj/rj/section_topic/${sectionId}`,
       method: "GET",
       format: "json",
       ...params,

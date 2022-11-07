@@ -47,6 +47,14 @@ func TestGenesis(t *testing.T) {
 				PostId: 1,
 			},
 		},
+		SectionTopicList: []types.SectionTopic{
+			{
+				SectionId: 0,
+			},
+			{
+				SectionId: 1,
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -64,5 +72,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.SectionList, got.SectionList)
 	require.ElementsMatch(t, genesisState.TopicList, got.TopicList)
 	require.ElementsMatch(t, genesisState.PostList, got.PostList)
+	require.ElementsMatch(t, genesisState.SectionTopicList, got.SectionTopicList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

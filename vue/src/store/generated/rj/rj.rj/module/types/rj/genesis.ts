@@ -6,6 +6,7 @@ import { PostId } from "../rj/post_id";
 import { Section } from "../rj/section";
 import { Topic } from "../rj/topic";
 import { Post } from "../rj/post";
+import { SectionTopic } from "../rj/section_topic";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rj.rj";
@@ -18,8 +19,9 @@ export interface GenesisState {
   postId: PostId | undefined;
   sectionList: Section[];
   topicList: Topic[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   postList: Post[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  sectionTopicList: SectionTopic[];
 }
 
 const baseGenesisState: object = {};
@@ -47,6 +49,9 @@ export const GenesisState = {
     for (const v of message.postList) {
       Post.encode(v!, writer.uint32(58).fork()).ldelim();
     }
+    for (const v of message.sectionTopicList) {
+      SectionTopic.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -57,6 +62,7 @@ export const GenesisState = {
     message.sectionList = [];
     message.topicList = [];
     message.postList = [];
+    message.sectionTopicList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -81,6 +87,11 @@ export const GenesisState = {
         case 7:
           message.postList.push(Post.decode(reader, reader.uint32()));
           break;
+        case 8:
+          message.sectionTopicList.push(
+            SectionTopic.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -94,6 +105,7 @@ export const GenesisState = {
     message.sectionList = [];
     message.topicList = [];
     message.postList = [];
+    message.sectionTopicList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -127,6 +139,14 @@ export const GenesisState = {
     if (object.postList !== undefined && object.postList !== null) {
       for (const e of object.postList) {
         message.postList.push(Post.fromJSON(e));
+      }
+    }
+    if (
+      object.sectionTopicList !== undefined &&
+      object.sectionTopicList !== null
+    ) {
+      for (const e of object.sectionTopicList) {
+        message.sectionTopicList.push(SectionTopic.fromJSON(e));
       }
     }
     return message;
@@ -167,6 +187,13 @@ export const GenesisState = {
     } else {
       obj.postList = [];
     }
+    if (message.sectionTopicList) {
+      obj.sectionTopicList = message.sectionTopicList.map((e) =>
+        e ? SectionTopic.toJSON(e) : undefined
+      );
+    } else {
+      obj.sectionTopicList = [];
+    }
     return obj;
   },
 
@@ -175,6 +202,7 @@ export const GenesisState = {
     message.sectionList = [];
     message.topicList = [];
     message.postList = [];
+    message.sectionTopicList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -208,6 +236,14 @@ export const GenesisState = {
     if (object.postList !== undefined && object.postList !== null) {
       for (const e of object.postList) {
         message.postList.push(Post.fromPartial(e));
+      }
+    }
+    if (
+      object.sectionTopicList !== undefined &&
+      object.sectionTopicList !== null
+    ) {
+      for (const e of object.sectionTopicList) {
+        message.sectionTopicList.push(SectionTopic.fromPartial(e));
       }
     }
     return message;

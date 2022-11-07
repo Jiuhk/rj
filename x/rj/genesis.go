@@ -33,6 +33,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.PostList {
 		k.SetPost(ctx, elem)
 	}
+	// Set all the sectionTopic
+	for _, elem := range genState.SectionTopicList {
+		k.SetSectionTopic(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -60,6 +64,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.SectionList = k.GetAllSection(ctx)
 	genesis.TopicList = k.GetAllTopic(ctx)
 	genesis.PostList = k.GetAllPost(ctx)
+	genesis.SectionTopicList = k.GetAllSectionTopic(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -10,12 +10,13 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		SectionId:   nil,
-		TopicId:     nil,
-		PostId:      nil,
-		SectionList: []Section{},
-		TopicList:   []Topic{},
-		PostList:    []Post{},
+		SectionId:        nil,
+		TopicId:          nil,
+		PostId:           nil,
+		SectionList:      []Section{},
+		TopicList:        []Topic{},
+		PostList:         []Post{},
+		SectionTopicList: []SectionTopic{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -53,6 +54,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for post")
 		}
 		postIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in sectionTopic
+	sectionTopicIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.SectionTopicList {
+		index := string(SectionTopicKey(elem.SectionId))
+		if _, ok := sectionTopicIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for sectionTopic")
+		}
+		sectionTopicIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

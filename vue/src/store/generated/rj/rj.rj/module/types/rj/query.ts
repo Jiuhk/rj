@@ -12,6 +12,7 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Topic } from "../rj/topic";
 import { Post } from "../rj/post";
+import { SectionTopic } from "../rj/section_topic";
 
 export const protobufPackage = "rj.rj";
 
@@ -90,6 +91,23 @@ export interface QueryAllPostRequest {
 
 export interface QueryAllPostResponse {
   post: Post[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetSectionTopicRequest {
+  sectionId: number;
+}
+
+export interface QueryGetSectionTopicResponse {
+  sectionTopic: SectionTopic | undefined;
+}
+
+export interface QueryAllSectionTopicRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllSectionTopicResponse {
+  sectionTopic: SectionTopic[];
   pagination: PageResponse | undefined;
 }
 
@@ -1346,6 +1364,325 @@ export const QueryAllPostResponse = {
   },
 };
 
+const baseQueryGetSectionTopicRequest: object = { sectionId: 0 };
+
+export const QueryGetSectionTopicRequest = {
+  encode(
+    message: QueryGetSectionTopicRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sectionId !== 0) {
+      writer.uint32(8).uint64(message.sectionId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSectionTopicRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSectionTopicRequest,
+    } as QueryGetSectionTopicRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sectionId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSectionTopicRequest {
+    const message = {
+      ...baseQueryGetSectionTopicRequest,
+    } as QueryGetSectionTopicRequest;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = Number(object.sectionId);
+    } else {
+      message.sectionId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSectionTopicRequest): unknown {
+    const obj: any = {};
+    message.sectionId !== undefined && (obj.sectionId = message.sectionId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSectionTopicRequest>
+  ): QueryGetSectionTopicRequest {
+    const message = {
+      ...baseQueryGetSectionTopicRequest,
+    } as QueryGetSectionTopicRequest;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = object.sectionId;
+    } else {
+      message.sectionId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetSectionTopicResponse: object = {};
+
+export const QueryGetSectionTopicResponse = {
+  encode(
+    message: QueryGetSectionTopicResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sectionTopic !== undefined) {
+      SectionTopic.encode(
+        message.sectionTopic,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSectionTopicResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSectionTopicResponse,
+    } as QueryGetSectionTopicResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sectionTopic = SectionTopic.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSectionTopicResponse {
+    const message = {
+      ...baseQueryGetSectionTopicResponse,
+    } as QueryGetSectionTopicResponse;
+    if (object.sectionTopic !== undefined && object.sectionTopic !== null) {
+      message.sectionTopic = SectionTopic.fromJSON(object.sectionTopic);
+    } else {
+      message.sectionTopic = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSectionTopicResponse): unknown {
+    const obj: any = {};
+    message.sectionTopic !== undefined &&
+      (obj.sectionTopic = message.sectionTopic
+        ? SectionTopic.toJSON(message.sectionTopic)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSectionTopicResponse>
+  ): QueryGetSectionTopicResponse {
+    const message = {
+      ...baseQueryGetSectionTopicResponse,
+    } as QueryGetSectionTopicResponse;
+    if (object.sectionTopic !== undefined && object.sectionTopic !== null) {
+      message.sectionTopic = SectionTopic.fromPartial(object.sectionTopic);
+    } else {
+      message.sectionTopic = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSectionTopicRequest: object = {};
+
+export const QueryAllSectionTopicRequest = {
+  encode(
+    message: QueryAllSectionTopicRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllSectionTopicRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllSectionTopicRequest,
+    } as QueryAllSectionTopicRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSectionTopicRequest {
+    const message = {
+      ...baseQueryAllSectionTopicRequest,
+    } as QueryAllSectionTopicRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSectionTopicRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSectionTopicRequest>
+  ): QueryAllSectionTopicRequest {
+    const message = {
+      ...baseQueryAllSectionTopicRequest,
+    } as QueryAllSectionTopicRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSectionTopicResponse: object = {};
+
+export const QueryAllSectionTopicResponse = {
+  encode(
+    message: QueryAllSectionTopicResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.sectionTopic) {
+      SectionTopic.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllSectionTopicResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllSectionTopicResponse,
+    } as QueryAllSectionTopicResponse;
+    message.sectionTopic = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sectionTopic.push(
+            SectionTopic.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSectionTopicResponse {
+    const message = {
+      ...baseQueryAllSectionTopicResponse,
+    } as QueryAllSectionTopicResponse;
+    message.sectionTopic = [];
+    if (object.sectionTopic !== undefined && object.sectionTopic !== null) {
+      for (const e of object.sectionTopic) {
+        message.sectionTopic.push(SectionTopic.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSectionTopicResponse): unknown {
+    const obj: any = {};
+    if (message.sectionTopic) {
+      obj.sectionTopic = message.sectionTopic.map((e) =>
+        e ? SectionTopic.toJSON(e) : undefined
+      );
+    } else {
+      obj.sectionTopic = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSectionTopicResponse>
+  ): QueryAllSectionTopicResponse {
+    const message = {
+      ...baseQueryAllSectionTopicResponse,
+    } as QueryAllSectionTopicResponse;
+    message.sectionTopic = [];
+    if (object.sectionTopic !== undefined && object.sectionTopic !== null) {
+      for (const e of object.sectionTopic) {
+        message.sectionTopic.push(SectionTopic.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1370,6 +1707,14 @@ export interface Query {
   Post(request: QueryGetPostRequest): Promise<QueryGetPostResponse>;
   /** Queries a list of Post items. */
   PostAll(request: QueryAllPostRequest): Promise<QueryAllPostResponse>;
+  /** Queries a SectionTopic by index. */
+  SectionTopic(
+    request: QueryGetSectionTopicRequest
+  ): Promise<QueryGetSectionTopicResponse>;
+  /** Queries a list of SectionTopic items. */
+  SectionTopicAll(
+    request: QueryAllSectionTopicRequest
+  ): Promise<QueryAllSectionTopicResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1456,6 +1801,26 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("rj.rj.Query", "PostAll", data);
     return promise.then((data) =>
       QueryAllPostResponse.decode(new Reader(data))
+    );
+  }
+
+  SectionTopic(
+    request: QueryGetSectionTopicRequest
+  ): Promise<QueryGetSectionTopicResponse> {
+    const data = QueryGetSectionTopicRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "SectionTopic", data);
+    return promise.then((data) =>
+      QueryGetSectionTopicResponse.decode(new Reader(data))
+    );
+  }
+
+  SectionTopicAll(
+    request: QueryAllSectionTopicRequest
+  ): Promise<QueryAllSectionTopicResponse> {
+    const data = QueryAllSectionTopicRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "SectionTopicAll", data);
+    return promise.then((data) =>
+      QueryAllSectionTopicResponse.decode(new Reader(data))
     );
   }
 }
