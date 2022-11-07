@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "rj/params.proto";
 import "rj/section_id.proto";
 import "rj/topic_id.proto";
+import "rj/post_id.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "rj/x/rj/types";
@@ -14,5 +15,6 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   SectionId sectionId = 2;
   TopicId topicId = 3;
+  PostId postId = 4;
   // this line is used by starport scaffolding # genesis/proto/state
 }

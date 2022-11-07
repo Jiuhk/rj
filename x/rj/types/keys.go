@@ -28,3 +28,7 @@ const (
 const (
 	TopicIdKey = "TopicId-value-"
 )
+
+const (
+	PostIdKey = "PostId-value-"
+)

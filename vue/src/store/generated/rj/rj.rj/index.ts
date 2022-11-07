@@ -1,11 +1,12 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Params } from "./module/types/rj/params"
+import { PostId } from "./module/types/rj/post_id"
 import { SectionId } from "./module/types/rj/section_id"
 import { TopicId } from "./module/types/rj/topic_id"
 
 
-export { Params, SectionId, TopicId };
+export { Params, PostId, SectionId, TopicId };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -46,9 +47,11 @@ const getDefaultState = () => {
 				Params: {},
 				SectionId: {},
 				TopicId: {},
+				PostId: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
+						PostId: getStructure(PostId.fromPartial({})),
 						SectionId: getStructure(SectionId.fromPartial({})),
 						TopicId: getStructure(TopicId.fromPartial({})),
 						
@@ -96,6 +99,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.TopicId[JSON.stringify(params)] ?? {}
+		},
+				getPostId: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.PostId[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -192,6 +201,28 @@ export default {
 				return getters['getTopicId']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryTopicId API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryPostId({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryPostId()).data
+				
+					
+				commit('QUERY', { query: 'PostId', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPostId', payload: { options: { all }, params: {...key},query }})
+				return getters['getPostId']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryPostId API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

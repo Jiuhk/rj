@@ -2,6 +2,7 @@
 import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
 import { TopicId } from "../rj/topic_id";
+import { PostId } from "../rj/post_id";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rj.rj";
@@ -10,8 +11,9 @@ export const protobufPackage = "rj.rj";
 export interface GenesisState {
   params: Params | undefined;
   sectionId: SectionId | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   topicId: TopicId | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  postId: PostId | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -26,6 +28,9 @@ export const GenesisState = {
     }
     if (message.topicId !== undefined) {
       TopicId.encode(message.topicId, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.postId !== undefined) {
+      PostId.encode(message.postId, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -45,6 +50,9 @@ export const GenesisState = {
           break;
         case 3:
           message.topicId = TopicId.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.postId = PostId.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -71,6 +79,11 @@ export const GenesisState = {
     } else {
       message.topicId = undefined;
     }
+    if (object.postId !== undefined && object.postId !== null) {
+      message.postId = PostId.fromJSON(object.postId);
+    } else {
+      message.postId = undefined;
+    }
     return message;
   },
 
@@ -86,6 +99,8 @@ export const GenesisState = {
       (obj.topicId = message.topicId
         ? TopicId.toJSON(message.topicId)
         : undefined);
+    message.postId !== undefined &&
+      (obj.postId = message.postId ? PostId.toJSON(message.postId) : undefined);
     return obj;
   },
 
@@ -105,6 +120,11 @@ export const GenesisState = {
       message.topicId = TopicId.fromPartial(object.topicId);
     } else {
       message.topicId = undefined;
+    }
+    if (object.postId !== undefined && object.postId !== null) {
+      message.postId = PostId.fromPartial(object.postId);
+    } else {
+      message.postId = undefined;
     }
     return message;
   },

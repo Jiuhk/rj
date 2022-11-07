@@ -17,6 +17,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.TopicId != nil {
 		k.SetTopicId(ctx, *genState.TopicId)
 	}
+	// Set if defined
+	if genState.PostId != nil {
+		k.SetPostId(ctx, *genState.PostId)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -35,6 +39,11 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	topicId, found := k.GetTopicId(ctx)
 	if found {
 		genesis.TopicId = &topicId
+	}
+	// Get all postId
+	postId, found := k.GetPostId(ctx)
+	if found {
+		genesis.PostId = &postId
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

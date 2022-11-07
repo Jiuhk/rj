@@ -18,6 +18,15 @@ export interface ProtobufAny {
  */
 export type RjParams = object;
 
+export interface RjPostId {
+  /** @format uint64 */
+  postId?: string;
+}
+
+export interface RjQueryGetPostIdResponse {
+  PostId?: RjPostId;
+}
+
 export interface RjQueryGetSectionIdResponse {
   SectionId?: RjSectionId;
 }
@@ -258,6 +267,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<RjQueryParamsResponse, RpcStatus>({
       path: `/rj/rj/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPostId
+   * @summary Queries a PostId by index.
+   * @request GET:/rj/rj/post_id
+   */
+  queryPostId = (params: RequestParams = {}) =>
+    this.request<RjQueryGetPostIdResponse, RpcStatus>({
+      path: `/rj/rj/post_id`,
       method: "GET",
       format: "json",
       ...params,

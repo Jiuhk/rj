@@ -30289,6 +30289,42 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /rj/rj/post_id:
+    get:
+      summary: Queries a PostId by index.
+      operationId: RjRjPostId
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              PostId:
+                type: object
+                properties:
+                  postId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /rj/rj/section_id:
     get:
       summary: Queries a SectionId by index.
@@ -51954,6 +51990,21 @@ definitions:
   rj.rj.Params:
     type: object
     description: Params defines the parameters for the module.
+  rj.rj.PostId:
+    type: object
+    properties:
+      postId:
+        type: string
+        format: uint64
+  rj.rj.QueryGetPostIdResponse:
+    type: object
+    properties:
+      PostId:
+        type: object
+        properties:
+          postId:
+            type: string
+            format: uint64
   rj.rj.QueryGetSectionIdResponse:
     type: object
     properties:

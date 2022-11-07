@@ -3,6 +3,7 @@ import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
 import { TopicId } from "../rj/topic_id";
+import { PostId } from "../rj/post_id";
 
 export const protobufPackage = "rj.rj";
 
@@ -25,6 +26,12 @@ export interface QueryGetTopicIdRequest {}
 
 export interface QueryGetTopicIdResponse {
   TopicId: TopicId | undefined;
+}
+
+export interface QueryGetPostIdRequest {}
+
+export interface QueryGetPostIdResponse {
+  PostId: PostId | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -355,6 +362,105 @@ export const QueryGetTopicIdResponse = {
   },
 };
 
+const baseQueryGetPostIdRequest: object = {};
+
+export const QueryGetPostIdRequest = {
+  encode(_: QueryGetPostIdRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPostIdRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetPostIdRequest } as QueryGetPostIdRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetPostIdRequest {
+    const message = { ...baseQueryGetPostIdRequest } as QueryGetPostIdRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetPostIdRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryGetPostIdRequest>): QueryGetPostIdRequest {
+    const message = { ...baseQueryGetPostIdRequest } as QueryGetPostIdRequest;
+    return message;
+  },
+};
+
+const baseQueryGetPostIdResponse: object = {};
+
+export const QueryGetPostIdResponse = {
+  encode(
+    message: QueryGetPostIdResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.PostId !== undefined) {
+      PostId.encode(message.PostId, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPostIdResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetPostIdResponse } as QueryGetPostIdResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.PostId = PostId.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPostIdResponse {
+    const message = { ...baseQueryGetPostIdResponse } as QueryGetPostIdResponse;
+    if (object.PostId !== undefined && object.PostId !== null) {
+      message.PostId = PostId.fromJSON(object.PostId);
+    } else {
+      message.PostId = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetPostIdResponse): unknown {
+    const obj: any = {};
+    message.PostId !== undefined &&
+      (obj.PostId = message.PostId ? PostId.toJSON(message.PostId) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetPostIdResponse>
+  ): QueryGetPostIdResponse {
+    const message = { ...baseQueryGetPostIdResponse } as QueryGetPostIdResponse;
+    if (object.PostId !== undefined && object.PostId !== null) {
+      message.PostId = PostId.fromPartial(object.PostId);
+    } else {
+      message.PostId = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -365,6 +471,8 @@ export interface Query {
   ): Promise<QueryGetSectionIdResponse>;
   /** Queries a TopicId by index. */
   TopicId(request: QueryGetTopicIdRequest): Promise<QueryGetTopicIdResponse>;
+  /** Queries a PostId by index. */
+  PostId(request: QueryGetPostIdRequest): Promise<QueryGetPostIdResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -393,6 +501,14 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("rj.rj.Query", "TopicId", data);
     return promise.then((data) =>
       QueryGetTopicIdResponse.decode(new Reader(data))
+    );
+  }
+
+  PostId(request: QueryGetPostIdRequest): Promise<QueryGetPostIdResponse> {
+    const data = QueryGetPostIdRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "PostId", data);
+    return promise.then((data) =>
+      QueryGetPostIdResponse.decode(new Reader(data))
     );
   }
 }
