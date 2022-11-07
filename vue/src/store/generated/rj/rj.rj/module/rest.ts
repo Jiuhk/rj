@@ -38,6 +38,21 @@ export interface RjQueryAllSectionResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface RjQueryAllTopicResponse {
+  topic?: RjTopic[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface RjQueryGetPostIdResponse {
   PostId?: RjPostId;
 }
@@ -52,6 +67,10 @@ export interface RjQueryGetSectionResponse {
 
 export interface RjQueryGetTopicIdResponse {
   TopicId?: RjTopicId;
+}
+
+export interface RjQueryGetTopicResponse {
+  topic?: RjTopic;
 }
 
 /**
@@ -71,6 +90,18 @@ export interface RjSection {
 export interface RjSectionId {
   /** @format uint64 */
   sectionId?: string;
+}
+
+export interface RjTopic {
+  /** @format uint64 */
+  topicId?: string;
+
+  /** @format uint64 */
+  sectionId?: string;
+  title?: string;
+  creator?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface RjTopicId {
@@ -429,6 +460,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySectionId = (params: RequestParams = {}) =>
     this.request<RjQueryGetSectionIdResponse, RpcStatus>({
       path: `/rj/rj/section_id`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTopicAll
+   * @summary Queries a list of Topic items.
+   * @request GET:/rj/rj/topic
+   */
+  queryTopicAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<RjQueryAllTopicResponse, RpcStatus>({
+      path: `/rj/rj/topic`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTopic
+   * @summary Queries a Topic by index.
+   * @request GET:/rj/rj/topic/{topicId}
+   */
+  queryTopic = (topicId: string, params: RequestParams = {}) =>
+    this.request<RjQueryGetTopicResponse, RpcStatus>({
+      path: `/rj/rj/topic/${topicId}`,
       method: "GET",
       format: "json",
       ...params,

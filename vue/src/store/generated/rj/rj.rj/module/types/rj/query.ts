@@ -10,6 +10,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Topic } from "../rj/topic";
 
 export const protobufPackage = "rj.rj";
 
@@ -54,6 +55,23 @@ export interface QueryAllSectionRequest {
 
 export interface QueryAllSectionResponse {
   section: Section[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetTopicRequest {
+  topicId: number;
+}
+
+export interface QueryGetTopicResponse {
+  topic: Topic | undefined;
+}
+
+export interface QueryAllTopicRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllTopicResponse {
+  topic: Topic[];
   pagination: PageResponse | undefined;
 }
 
@@ -774,6 +792,276 @@ export const QueryAllSectionResponse = {
   },
 };
 
+const baseQueryGetTopicRequest: object = { topicId: 0 };
+
+export const QueryGetTopicRequest = {
+  encode(
+    message: QueryGetTopicRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.topicId !== 0) {
+      writer.uint32(8).uint64(message.topicId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetTopicRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetTopicRequest } as QueryGetTopicRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topicId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTopicRequest {
+    const message = { ...baseQueryGetTopicRequest } as QueryGetTopicRequest;
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = Number(object.topicId);
+    } else {
+      message.topicId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTopicRequest): unknown {
+    const obj: any = {};
+    message.topicId !== undefined && (obj.topicId = message.topicId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetTopicRequest>): QueryGetTopicRequest {
+    const message = { ...baseQueryGetTopicRequest } as QueryGetTopicRequest;
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = object.topicId;
+    } else {
+      message.topicId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetTopicResponse: object = {};
+
+export const QueryGetTopicResponse = {
+  encode(
+    message: QueryGetTopicResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.topic !== undefined) {
+      Topic.encode(message.topic, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetTopicResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetTopicResponse } as QueryGetTopicResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topic = Topic.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTopicResponse {
+    const message = { ...baseQueryGetTopicResponse } as QueryGetTopicResponse;
+    if (object.topic !== undefined && object.topic !== null) {
+      message.topic = Topic.fromJSON(object.topic);
+    } else {
+      message.topic = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTopicResponse): unknown {
+    const obj: any = {};
+    message.topic !== undefined &&
+      (obj.topic = message.topic ? Topic.toJSON(message.topic) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTopicResponse>
+  ): QueryGetTopicResponse {
+    const message = { ...baseQueryGetTopicResponse } as QueryGetTopicResponse;
+    if (object.topic !== undefined && object.topic !== null) {
+      message.topic = Topic.fromPartial(object.topic);
+    } else {
+      message.topic = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllTopicRequest: object = {};
+
+export const QueryAllTopicRequest = {
+  encode(
+    message: QueryAllTopicRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllTopicRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllTopicRequest } as QueryAllTopicRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllTopicRequest {
+    const message = { ...baseQueryAllTopicRequest } as QueryAllTopicRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllTopicRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllTopicRequest>): QueryAllTopicRequest {
+    const message = { ...baseQueryAllTopicRequest } as QueryAllTopicRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllTopicResponse: object = {};
+
+export const QueryAllTopicResponse = {
+  encode(
+    message: QueryAllTopicResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.topic) {
+      Topic.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllTopicResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllTopicResponse } as QueryAllTopicResponse;
+    message.topic = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.topic.push(Topic.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllTopicResponse {
+    const message = { ...baseQueryAllTopicResponse } as QueryAllTopicResponse;
+    message.topic = [];
+    if (object.topic !== undefined && object.topic !== null) {
+      for (const e of object.topic) {
+        message.topic.push(Topic.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllTopicResponse): unknown {
+    const obj: any = {};
+    if (message.topic) {
+      obj.topic = message.topic.map((e) => (e ? Topic.toJSON(e) : undefined));
+    } else {
+      obj.topic = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllTopicResponse>
+  ): QueryAllTopicResponse {
+    const message = { ...baseQueryAllTopicResponse } as QueryAllTopicResponse;
+    message.topic = [];
+    if (object.topic !== undefined && object.topic !== null) {
+      for (const e of object.topic) {
+        message.topic.push(Topic.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -790,6 +1078,10 @@ export interface Query {
   Section(request: QueryGetSectionRequest): Promise<QueryGetSectionResponse>;
   /** Queries a list of Section items. */
   SectionAll(request: QueryAllSectionRequest): Promise<QueryAllSectionResponse>;
+  /** Queries a Topic by index. */
+  Topic(request: QueryGetTopicRequest): Promise<QueryGetTopicResponse>;
+  /** Queries a list of Topic items. */
+  TopicAll(request: QueryAllTopicRequest): Promise<QueryAllTopicResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -844,6 +1136,22 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("rj.rj.Query", "SectionAll", data);
     return promise.then((data) =>
       QueryAllSectionResponse.decode(new Reader(data))
+    );
+  }
+
+  Topic(request: QueryGetTopicRequest): Promise<QueryGetTopicResponse> {
+    const data = QueryGetTopicRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "Topic", data);
+    return promise.then((data) =>
+      QueryGetTopicResponse.decode(new Reader(data))
+    );
+  }
+
+  TopicAll(request: QueryAllTopicRequest): Promise<QueryAllTopicResponse> {
+    const data = QueryAllTopicRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "TopicAll", data);
+    return promise.then((data) =>
+      QueryAllTopicResponse.decode(new Reader(data))
     );
   }
 }

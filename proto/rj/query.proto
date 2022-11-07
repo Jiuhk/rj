@@ -9,6 +9,7 @@ import "rj/section_id.proto";
 import "rj/topic_id.proto";
 import "rj/post_id.proto";
 import "rj/section.proto";
+import "rj/topic.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "rj/x/rj/types";
@@ -39,6 +40,16 @@ service Query {
 	// Queries a list of Section items.
 	rpc SectionAll(QueryAllSectionRequest) returns (QueryAllSectionResponse) {
 		option (google.api.http).get = "/rj/rj/section";
+	}
+
+// Queries a Topic by index.
+	rpc Topic(QueryGetTopicRequest) returns (QueryGetTopicResponse) {
+		option (google.api.http).get = "/rj/rj/topic/{topicId}";
+	}
+
+	// Queries a list of Topic items.
+	rpc TopicAll(QueryAllTopicRequest) returns (QueryAllTopicResponse) {
+		option (google.api.http).get = "/rj/rj/topic";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -83,6 +94,24 @@ message QueryAllSectionRequest {
 
 message QueryAllSectionResponse {
 	repeated Section section = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetTopicRequest {
+	  uint64 topicId = 1;
+
+}
+
+message QueryGetTopicResponse {
+	Topic topic = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTopicRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTopicResponse {
+	repeated Topic topic = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

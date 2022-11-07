@@ -4,6 +4,7 @@ import { SectionId } from "../rj/section_id";
 import { TopicId } from "../rj/topic_id";
 import { PostId } from "../rj/post_id";
 import { Section } from "../rj/section";
+import { Topic } from "../rj/topic";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rj.rj";
@@ -14,8 +15,9 @@ export interface GenesisState {
   sectionId: SectionId | undefined;
   topicId: TopicId | undefined;
   postId: PostId | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   sectionList: Section[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  topicList: Topic[];
 }
 
 const baseGenesisState: object = {};
@@ -37,6 +39,9 @@ export const GenesisState = {
     for (const v of message.sectionList) {
       Section.encode(v!, writer.uint32(42).fork()).ldelim();
     }
+    for (const v of message.topicList) {
+      Topic.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -45,6 +50,7 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.sectionList = [];
+    message.topicList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -63,6 +69,9 @@ export const GenesisState = {
         case 5:
           message.sectionList.push(Section.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.topicList.push(Topic.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -74,6 +83,7 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.sectionList = [];
+    message.topicList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -97,6 +107,11 @@ export const GenesisState = {
     if (object.sectionList !== undefined && object.sectionList !== null) {
       for (const e of object.sectionList) {
         message.sectionList.push(Section.fromJSON(e));
+      }
+    }
+    if (object.topicList !== undefined && object.topicList !== null) {
+      for (const e of object.topicList) {
+        message.topicList.push(Topic.fromJSON(e));
       }
     }
     return message;
@@ -123,12 +138,20 @@ export const GenesisState = {
     } else {
       obj.sectionList = [];
     }
+    if (message.topicList) {
+      obj.topicList = message.topicList.map((e) =>
+        e ? Topic.toJSON(e) : undefined
+      );
+    } else {
+      obj.topicList = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.sectionList = [];
+    message.topicList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -152,6 +175,11 @@ export const GenesisState = {
     if (object.sectionList !== undefined && object.sectionList !== null) {
       for (const e of object.sectionList) {
         message.sectionList.push(Section.fromPartial(e));
+      }
+    }
+    if (object.topicList !== undefined && object.topicList !== null) {
+      for (const e of object.topicList) {
+        message.topicList.push(Topic.fromPartial(e));
       }
     }
     return message;
