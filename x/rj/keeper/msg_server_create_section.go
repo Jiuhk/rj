@@ -21,6 +21,12 @@ func (k msgServer) CreateSection(goCtx context.Context, msg *types.MsgCreateSect
 	}
 
 	k.Keeper.SetSection(ctx, newSection)
+
+	k.Keeper.SetSectionTopic(ctx, types.SectionTopic{
+		SectionId:	newSectionId.SectionId,
+		Topics:		[]uint64{},
+	})
+
 	newSectionId.SectionId++
 	k.Keeper.SetSectionId(ctx, newSectionId)
 
