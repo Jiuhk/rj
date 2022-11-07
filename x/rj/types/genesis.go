@@ -10,9 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		SectionId:        &SectionId{ SectionId: uint64(DefaultIndex), },
-		TopicId:          &TopicId{ TopicId: uint64(DefaultIndex), },
-		PostId:           &PostId{ PostId: uint64(DefaultIndex), },
+		SectionId:        &SectionId{SectionId: uint64(DefaultIndex)},
+		TopicId:          &TopicId{TopicId: uint64(DefaultIndex)},
+		PostId:           &PostId{PostId: uint64(DefaultIndex)},
 		SectionList:      []Section{},
 		TopicList:        []Topic{},
 		PostList:         []Post{},

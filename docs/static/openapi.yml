@@ -52880,6 +52880,11 @@ definitions:
     properties:
       postId:
         type: string
+  rj.rj.MsgCreateSectionResponse:
+    type: object
+    properties:
+      sectionId:
+        type: string
   rj.rj.MsgCreateTopicResponse:
     type: object
     properties:

@@ -24,6 +24,15 @@ export interface MsgCreatePostResponse {
   postId: string;
 }
 
+export interface MsgCreateSection {
+  creator: string;
+  name: string;
+}
+
+export interface MsgCreateSectionResponse {
+  sectionId: string;
+}
+
 const baseMsgCreateTopic: object = { creator: "", sectionId: 0, title: "" };
 
 export const MsgCreateTopic = {
@@ -322,11 +331,153 @@ export const MsgCreatePostResponse = {
   },
 };
 
+const baseMsgCreateSection: object = { creator: "", name: "" };
+
+export const MsgCreateSection = {
+  encode(message: MsgCreateSection, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateSection {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateSection } as MsgCreateSection;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateSection {
+    const message = { ...baseMsgCreateSection } as MsgCreateSection;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateSection): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreateSection>): MsgCreateSection {
+    const message = { ...baseMsgCreateSection } as MsgCreateSection;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateSectionResponse: object = { sectionId: "" };
+
+export const MsgCreateSectionResponse = {
+  encode(
+    message: MsgCreateSectionResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sectionId !== "") {
+      writer.uint32(10).string(message.sectionId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateSectionResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateSectionResponse,
+    } as MsgCreateSectionResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sectionId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateSectionResponse {
+    const message = {
+      ...baseMsgCreateSectionResponse,
+    } as MsgCreateSectionResponse;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = String(object.sectionId);
+    } else {
+      message.sectionId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateSectionResponse): unknown {
+    const obj: any = {};
+    message.sectionId !== undefined && (obj.sectionId = message.sectionId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateSectionResponse>
+  ): MsgCreateSectionResponse {
+    const message = {
+      ...baseMsgCreateSectionResponse,
+    } as MsgCreateSectionResponse;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = object.sectionId;
+    } else {
+      message.sectionId = "";
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateTopic(request: MsgCreateTopic): Promise<MsgCreateTopicResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreatePost(request: MsgCreatePost): Promise<MsgCreatePostResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateSection(request: MsgCreateSection): Promise<MsgCreateSectionResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -347,6 +498,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("rj.rj.Msg", "CreatePost", data);
     return promise.then((data) =>
       MsgCreatePostResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateSection(request: MsgCreateSection): Promise<MsgCreateSectionResponse> {
+    const data = MsgCreateSection.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Msg", "CreateSection", data);
+    return promise.then((data) =>
+      MsgCreateSectionResponse.decode(new Reader(data))
     );
   }
 }

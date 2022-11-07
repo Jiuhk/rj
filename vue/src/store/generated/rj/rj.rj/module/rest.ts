@@ -17,6 +17,10 @@ export interface RjMsgCreatePostResponse {
   postId?: string;
 }
 
+export interface RjMsgCreateSectionResponse {
+  sectionId?: string;
+}
+
 export interface RjMsgCreateTopicResponse {
   topicId?: string;
 }

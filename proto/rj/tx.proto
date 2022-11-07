@@ -9,6 +9,7 @@ option go_package = "rj/x/rj/types";
 service Msg {
       rpc CreateTopic(MsgCreateTopic) returns (MsgCreateTopicResponse);
   rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
+  rpc CreateSection(MsgCreateSection) returns (MsgCreateSectionResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -30,6 +31,15 @@ message MsgCreatePost {
 
 message MsgCreatePostResponse {
   string postId = 1;
+}
+
+message MsgCreateSection {
+  string creator = 1;
+  string name = 2;
+}
+
+message MsgCreateSectionResponse {
+  string sectionId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

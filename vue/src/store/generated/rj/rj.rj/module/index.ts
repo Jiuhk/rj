@@ -4,11 +4,13 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgCreateSection } from "./types/rj/tx";
 import { MsgCreateTopic } from "./types/rj/tx";
 import { MsgCreatePost } from "./types/rj/tx";
 
 
 const types = [
+  ["/rj.rj.MsgCreateSection", MsgCreateSection],
   ["/rj.rj.MsgCreateTopic", MsgCreateTopic],
   ["/rj.rj.MsgCreatePost", MsgCreatePost],
   
@@ -43,6 +45,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgCreateSection: (data: MsgCreateSection): EncodeObject => ({ typeUrl: "/rj.rj.MsgCreateSection", value: MsgCreateSection.fromPartial( data ) }),
     msgCreateTopic: (data: MsgCreateTopic): EncodeObject => ({ typeUrl: "/rj.rj.MsgCreateTopic", value: MsgCreateTopic.fromPartial( data ) }),
     msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/rj.rj.MsgCreatePost", value: MsgCreatePost.fromPartial( data ) }),
     
