@@ -52880,16 +52880,19 @@ definitions:
     properties:
       postId:
         type: string
+        format: uint64
   rj.rj.MsgCreateSectionResponse:
     type: object
     properties:
       sectionId:
         type: string
+        format: uint64
   rj.rj.MsgCreateTopicResponse:
     type: object
     properties:
       topicId:
         type: string
+        format: uint64
   rj.rj.Params:
     type: object
     description: Params defines the parameters for the module.

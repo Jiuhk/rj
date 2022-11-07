@@ -14,14 +14,17 @@ export interface ProtobufAny {
 }
 
 export interface RjMsgCreatePostResponse {
+  /** @format uint64 */
   postId?: string;
 }
 
 export interface RjMsgCreateSectionResponse {
+  /** @format uint64 */
   sectionId?: string;
 }
 
 export interface RjMsgCreateTopicResponse {
+  /** @format uint64 */
   topicId?: string;
 }
 

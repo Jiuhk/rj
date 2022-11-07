@@ -11,7 +11,7 @@ export interface MsgCreateTopic {
 }
 
 export interface MsgCreateTopicResponse {
-  topicId: string;
+  topicId: number;
 }
 
 export interface MsgCreatePost {
@@ -21,7 +21,7 @@ export interface MsgCreatePost {
 }
 
 export interface MsgCreatePostResponse {
-  postId: string;
+  postId: number;
 }
 
 export interface MsgCreateSection {
@@ -30,7 +30,7 @@ export interface MsgCreateSection {
 }
 
 export interface MsgCreateSectionResponse {
-  sectionId: string;
+  sectionId: number;
 }
 
 const baseMsgCreateTopic: object = { creator: "", sectionId: 0, title: "" };
@@ -122,15 +122,15 @@ export const MsgCreateTopic = {
   },
 };
 
-const baseMsgCreateTopicResponse: object = { topicId: "" };
+const baseMsgCreateTopicResponse: object = { topicId: 0 };
 
 export const MsgCreateTopicResponse = {
   encode(
     message: MsgCreateTopicResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.topicId !== "") {
-      writer.uint32(10).string(message.topicId);
+    if (message.topicId !== 0) {
+      writer.uint32(8).uint64(message.topicId);
     }
     return writer;
   },
@@ -143,7 +143,7 @@ export const MsgCreateTopicResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.topicId = reader.string();
+          message.topicId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -156,9 +156,9 @@ export const MsgCreateTopicResponse = {
   fromJSON(object: any): MsgCreateTopicResponse {
     const message = { ...baseMsgCreateTopicResponse } as MsgCreateTopicResponse;
     if (object.topicId !== undefined && object.topicId !== null) {
-      message.topicId = String(object.topicId);
+      message.topicId = Number(object.topicId);
     } else {
-      message.topicId = "";
+      message.topicId = 0;
     }
     return message;
   },
@@ -176,7 +176,7 @@ export const MsgCreateTopicResponse = {
     if (object.topicId !== undefined && object.topicId !== null) {
       message.topicId = object.topicId;
     } else {
-      message.topicId = "";
+      message.topicId = 0;
     }
     return message;
   },
@@ -271,15 +271,15 @@ export const MsgCreatePost = {
   },
 };
 
-const baseMsgCreatePostResponse: object = { postId: "" };
+const baseMsgCreatePostResponse: object = { postId: 0 };
 
 export const MsgCreatePostResponse = {
   encode(
     message: MsgCreatePostResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
+    if (message.postId !== 0) {
+      writer.uint32(8).uint64(message.postId);
     }
     return writer;
   },
@@ -292,7 +292,7 @@ export const MsgCreatePostResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.postId = reader.string();
+          message.postId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -305,9 +305,9 @@ export const MsgCreatePostResponse = {
   fromJSON(object: any): MsgCreatePostResponse {
     const message = { ...baseMsgCreatePostResponse } as MsgCreatePostResponse;
     if (object.postId !== undefined && object.postId !== null) {
-      message.postId = String(object.postId);
+      message.postId = Number(object.postId);
     } else {
-      message.postId = "";
+      message.postId = 0;
     }
     return message;
   },
@@ -325,7 +325,7 @@ export const MsgCreatePostResponse = {
     if (object.postId !== undefined && object.postId !== null) {
       message.postId = object.postId;
     } else {
-      message.postId = "";
+      message.postId = 0;
     }
     return message;
   },
@@ -403,15 +403,15 @@ export const MsgCreateSection = {
   },
 };
 
-const baseMsgCreateSectionResponse: object = { sectionId: "" };
+const baseMsgCreateSectionResponse: object = { sectionId: 0 };
 
 export const MsgCreateSectionResponse = {
   encode(
     message: MsgCreateSectionResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.sectionId !== "") {
-      writer.uint32(10).string(message.sectionId);
+    if (message.sectionId !== 0) {
+      writer.uint32(8).uint64(message.sectionId);
     }
     return writer;
   },
@@ -429,7 +429,7 @@ export const MsgCreateSectionResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.sectionId = reader.string();
+          message.sectionId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -444,9 +444,9 @@ export const MsgCreateSectionResponse = {
       ...baseMsgCreateSectionResponse,
     } as MsgCreateSectionResponse;
     if (object.sectionId !== undefined && object.sectionId !== null) {
-      message.sectionId = String(object.sectionId);
+      message.sectionId = Number(object.sectionId);
     } else {
-      message.sectionId = "";
+      message.sectionId = 0;
     }
     return message;
   },
@@ -466,7 +466,7 @@ export const MsgCreateSectionResponse = {
     if (object.sectionId !== undefined && object.sectionId !== null) {
       message.sectionId = object.sectionId;
     } else {
-      message.sectionId = "";
+      message.sectionId = 0;
     }
     return message;
   },

@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"rj/x/rj/types"
@@ -16,18 +15,14 @@ func (k msgServer) CreateSection(goCtx context.Context, msg *types.MsgCreateSect
 		panic("NextSectionId not found")
 	}
 
-	newSectionIdDecimal :=  strconv.FormatUint(newSectionId.SectionId, 10)
-	section := types.Section{
-		SectionId:	newSectionIdDecimal,
+	newSection := types.Section{
+		SectionId:	newSectionId.SectionId,
 		Name:		msg.Name,
 	}
-	err := section.Validate()
-	if err != nil{
-		return nil, err
-	}
 
+	k.Keeper.SetSection(ctx, newSection)
 	newSectionId.SectionId++
 	k.Keeper.SetSectionId(ctx, newSectionId)
 
-	return &types.MsgCreateSectionResponse{ SectionId: newSectionId }, nil
+	return &types.MsgCreateSectionResponse{ SectionId: newSectionId.SectionId }, nil
 }

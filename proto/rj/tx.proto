@@ -20,7 +20,7 @@ message MsgCreateTopic {
 }
 
 message MsgCreateTopicResponse {
-  string topicId = 1;
+  uint64 topicId = 1;
 }
 
 message MsgCreatePost {
@@ -30,7 +30,7 @@ message MsgCreatePost {
 }
 
 message MsgCreatePostResponse {
-  string postId = 1;
+  uint64 postId = 1;
 }
 
 message MsgCreateSection {
@@ -39,7 +39,7 @@ message MsgCreateSection {
 }
 
 message MsgCreateSectionResponse {
-  string sectionId = 1;
+  uint64 sectionId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
