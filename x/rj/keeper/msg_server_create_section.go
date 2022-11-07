@@ -17,10 +17,10 @@ func (k msgServer) CreateSection(goCtx context.Context, msg *types.MsgCreateSect
 	}
 
 	newSectionIdDecimal :=  strconv.FormatUint(newSectionId.SectionId, 10)
-	section := types.Section(
+	section := types.Section{
 		SectionId:	newSectionIdDecimal,
 		Name:		msg.Name,
-	)
+	}
 	err := section.Validate()
 	if err != nil{
 		return nil, err
