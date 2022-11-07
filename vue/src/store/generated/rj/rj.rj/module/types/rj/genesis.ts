@@ -3,6 +3,7 @@ import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
 import { TopicId } from "../rj/topic_id";
 import { PostId } from "../rj/post_id";
+import { Section } from "../rj/section";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rj.rj";
@@ -12,8 +13,9 @@ export interface GenesisState {
   params: Params | undefined;
   sectionId: SectionId | undefined;
   topicId: TopicId | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   postId: PostId | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  sectionList: Section[];
 }
 
 const baseGenesisState: object = {};
@@ -32,6 +34,9 @@ export const GenesisState = {
     if (message.postId !== undefined) {
       PostId.encode(message.postId, writer.uint32(34).fork()).ldelim();
     }
+    for (const v of message.sectionList) {
+      Section.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -39,6 +44,7 @@ export const GenesisState = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
+    message.sectionList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -54,6 +60,9 @@ export const GenesisState = {
         case 4:
           message.postId = PostId.decode(reader, reader.uint32());
           break;
+        case 5:
+          message.sectionList.push(Section.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -64,6 +73,7 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
+    message.sectionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -84,6 +94,11 @@ export const GenesisState = {
     } else {
       message.postId = undefined;
     }
+    if (object.sectionList !== undefined && object.sectionList !== null) {
+      for (const e of object.sectionList) {
+        message.sectionList.push(Section.fromJSON(e));
+      }
+    }
     return message;
   },
 
@@ -101,11 +116,19 @@ export const GenesisState = {
         : undefined);
     message.postId !== undefined &&
       (obj.postId = message.postId ? PostId.toJSON(message.postId) : undefined);
+    if (message.sectionList) {
+      obj.sectionList = message.sectionList.map((e) =>
+        e ? Section.toJSON(e) : undefined
+      );
+    } else {
+      obj.sectionList = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
+    message.sectionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -125,6 +148,11 @@ export const GenesisState = {
       message.postId = PostId.fromPartial(object.postId);
     } else {
       message.postId = undefined;
+    }
+    if (object.sectionList !== undefined && object.sectionList !== null) {
+      for (const e of object.sectionList) {
+        message.sectionList.push(Section.fromPartial(e));
+      }
     }
     return message;
   },

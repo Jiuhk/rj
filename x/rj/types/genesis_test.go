@@ -31,9 +31,31 @@ func TestGenesisState_Validate(t *testing.T) {
 				PostId: &types.PostId{
 					PostId: 80,
 				},
+				SectionList: []types.Section{
+					{
+						SectionId: 0,
+					},
+					{
+						SectionId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated section",
+			genState: &types.GenesisState{
+				SectionList: []types.Section{
+					{
+						SectionId: 0,
+					},
+					{
+						SectionId: 0,
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

@@ -1,9 +1,15 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
 import { TopicId } from "../rj/topic_id";
 import { PostId } from "../rj/post_id";
+import { Section } from "../rj/section";
+import {
+  PageRequest,
+  PageResponse,
+} from "../cosmos/base/query/v1beta1/pagination";
 
 export const protobufPackage = "rj.rj";
 
@@ -32,6 +38,23 @@ export interface QueryGetPostIdRequest {}
 
 export interface QueryGetPostIdResponse {
   PostId: PostId | undefined;
+}
+
+export interface QueryGetSectionRequest {
+  sectionId: number;
+}
+
+export interface QueryGetSectionResponse {
+  section: Section | undefined;
+}
+
+export interface QueryAllSectionRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllSectionResponse {
+  section: Section[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -461,6 +484,296 @@ export const QueryGetPostIdResponse = {
   },
 };
 
+const baseQueryGetSectionRequest: object = { sectionId: 0 };
+
+export const QueryGetSectionRequest = {
+  encode(
+    message: QueryGetSectionRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sectionId !== 0) {
+      writer.uint32(8).uint64(message.sectionId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetSectionRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetSectionRequest } as QueryGetSectionRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sectionId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSectionRequest {
+    const message = { ...baseQueryGetSectionRequest } as QueryGetSectionRequest;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = Number(object.sectionId);
+    } else {
+      message.sectionId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSectionRequest): unknown {
+    const obj: any = {};
+    message.sectionId !== undefined && (obj.sectionId = message.sectionId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSectionRequest>
+  ): QueryGetSectionRequest {
+    const message = { ...baseQueryGetSectionRequest } as QueryGetSectionRequest;
+    if (object.sectionId !== undefined && object.sectionId !== null) {
+      message.sectionId = object.sectionId;
+    } else {
+      message.sectionId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetSectionResponse: object = {};
+
+export const QueryGetSectionResponse = {
+  encode(
+    message: QueryGetSectionResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.section !== undefined) {
+      Section.encode(message.section, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetSectionResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSectionResponse,
+    } as QueryGetSectionResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.section = Section.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSectionResponse {
+    const message = {
+      ...baseQueryGetSectionResponse,
+    } as QueryGetSectionResponse;
+    if (object.section !== undefined && object.section !== null) {
+      message.section = Section.fromJSON(object.section);
+    } else {
+      message.section = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSectionResponse): unknown {
+    const obj: any = {};
+    message.section !== undefined &&
+      (obj.section = message.section
+        ? Section.toJSON(message.section)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSectionResponse>
+  ): QueryGetSectionResponse {
+    const message = {
+      ...baseQueryGetSectionResponse,
+    } as QueryGetSectionResponse;
+    if (object.section !== undefined && object.section !== null) {
+      message.section = Section.fromPartial(object.section);
+    } else {
+      message.section = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSectionRequest: object = {};
+
+export const QueryAllSectionRequest = {
+  encode(
+    message: QueryAllSectionRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllSectionRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllSectionRequest } as QueryAllSectionRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSectionRequest {
+    const message = { ...baseQueryAllSectionRequest } as QueryAllSectionRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSectionRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSectionRequest>
+  ): QueryAllSectionRequest {
+    const message = { ...baseQueryAllSectionRequest } as QueryAllSectionRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSectionResponse: object = {};
+
+export const QueryAllSectionResponse = {
+  encode(
+    message: QueryAllSectionResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.section) {
+      Section.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllSectionResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllSectionResponse,
+    } as QueryAllSectionResponse;
+    message.section = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.section.push(Section.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSectionResponse {
+    const message = {
+      ...baseQueryAllSectionResponse,
+    } as QueryAllSectionResponse;
+    message.section = [];
+    if (object.section !== undefined && object.section !== null) {
+      for (const e of object.section) {
+        message.section.push(Section.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSectionResponse): unknown {
+    const obj: any = {};
+    if (message.section) {
+      obj.section = message.section.map((e) =>
+        e ? Section.toJSON(e) : undefined
+      );
+    } else {
+      obj.section = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSectionResponse>
+  ): QueryAllSectionResponse {
+    const message = {
+      ...baseQueryAllSectionResponse,
+    } as QueryAllSectionResponse;
+    message.section = [];
+    if (object.section !== undefined && object.section !== null) {
+      for (const e of object.section) {
+        message.section.push(Section.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -473,6 +786,10 @@ export interface Query {
   TopicId(request: QueryGetTopicIdRequest): Promise<QueryGetTopicIdResponse>;
   /** Queries a PostId by index. */
   PostId(request: QueryGetPostIdRequest): Promise<QueryGetPostIdResponse>;
+  /** Queries a Section by index. */
+  Section(request: QueryGetSectionRequest): Promise<QueryGetSectionResponse>;
+  /** Queries a list of Section items. */
+  SectionAll(request: QueryAllSectionRequest): Promise<QueryAllSectionResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -511,6 +828,24 @@ export class QueryClientImpl implements Query {
       QueryGetPostIdResponse.decode(new Reader(data))
     );
   }
+
+  Section(request: QueryGetSectionRequest): Promise<QueryGetSectionResponse> {
+    const data = QueryGetSectionRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "Section", data);
+    return promise.then((data) =>
+      QueryGetSectionResponse.decode(new Reader(data))
+    );
+  }
+
+  SectionAll(
+    request: QueryAllSectionRequest
+  ): Promise<QueryAllSectionResponse> {
+    const data = QueryAllSectionRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "SectionAll", data);
+    return promise.then((data) =>
+      QueryAllSectionResponse.decode(new Reader(data))
+    );
+  }
 }
 
 interface Rpc {
@@ -520,6 +855,16 @@ interface Rpc {
     data: Uint8Array
   ): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -531,3 +876,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package rj.rj;
+
+option go_package = "rj/x/rj/types";
+
+message Section {
+  uint64 sectionId = 1; 
+  string name = 2; 
+  
+}
+

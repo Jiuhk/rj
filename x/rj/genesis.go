@@ -21,6 +21,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.PostId != nil {
 		k.SetPostId(ctx, *genState.PostId)
 	}
+	// Set all the section
+	for _, elem := range genState.SectionList {
+		k.SetSection(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -45,6 +49,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.PostId = &postId
 	}
+	genesis.SectionList = k.GetAllSection(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
