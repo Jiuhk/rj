@@ -22,6 +22,10 @@ export interface RjQueryGetSectionIdResponse {
   SectionId?: RjSectionId;
 }
 
+export interface RjQueryGetTopicIdResponse {
+  TopicId?: RjTopicId;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -33,6 +37,11 @@ export interface RjQueryParamsResponse {
 export interface RjSectionId {
   /** @format uint64 */
   sectionId?: string;
+}
+
+export interface RjTopicId {
+  /** @format uint64 */
+  topicId?: string;
 }
 
 export interface RpcStatus {
@@ -265,6 +274,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySectionId = (params: RequestParams = {}) =>
     this.request<RjQueryGetSectionIdResponse, RpcStatus>({
       path: `/rj/rj/section_id`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTopicId
+   * @summary Queries a TopicId by index.
+   * @request GET:/rj/rj/topic_id
+   */
+  queryTopicId = (params: RequestParams = {}) =>
+    this.request<RjQueryGetTopicIdResponse, RpcStatus>({
+      path: `/rj/rj/topic_id`,
       method: "GET",
       format: "json",
       ...params,

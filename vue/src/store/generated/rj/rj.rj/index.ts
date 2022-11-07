@@ -2,9 +2,10 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Params } from "./module/types/rj/params"
 import { SectionId } from "./module/types/rj/section_id"
+import { TopicId } from "./module/types/rj/topic_id"
 
 
-export { Params, SectionId };
+export { Params, SectionId, TopicId };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -44,10 +45,12 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				SectionId: {},
+				TopicId: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
 						SectionId: getStructure(SectionId.fromPartial({})),
+						TopicId: getStructure(TopicId.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -87,6 +90,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.SectionId[JSON.stringify(params)] ?? {}
+		},
+				getTopicId: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.TopicId[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -161,6 +170,28 @@ export default {
 				return getters['getSectionId']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QuerySectionId API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryTopicId({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryTopicId()).data
+				
+					
+				commit('QUERY', { query: 'TopicId', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryTopicId', payload: { options: { all }, params: {...key},query }})
+				return getters['getTopicId']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryTopicId API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

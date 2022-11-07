@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "rj/params.proto";
 import "rj/section_id.proto";
+import "rj/topic_id.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "rj/x/rj/types";
@@ -19,6 +20,10 @@ service Query {
   // Queries a SectionId by index.
 	rpc SectionId(QueryGetSectionIdRequest) returns (QueryGetSectionIdResponse) {
 		option (google.api.http).get = "/rj/rj/section_id";
+	}
+// Queries a TopicId by index.
+	rpc TopicId(QueryGetTopicIdRequest) returns (QueryGetTopicIdResponse) {
+		option (google.api.http).get = "/rj/rj/topic_id";
 	}
 // this line is used by starport scaffolding # 2
 }
@@ -36,5 +41,10 @@ message QueryGetSectionIdRequest {}
 
 message QueryGetSectionIdResponse {
 	SectionId SectionId = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTopicIdRequest {}
+
+message QueryGetTopicIdResponse {
+	TopicId TopicId = 1 [(gogoproto.nullable) = false];
 }
 // this line is used by starport scaffolding # 3

@@ -24,3 +24,7 @@ func KeyPrefix(p string) []byte {
 const (
 	SectionIdKey = "SectionId-value-"
 )
+
+const (
+	TopicIdKey = "TopicId-value-"
+)

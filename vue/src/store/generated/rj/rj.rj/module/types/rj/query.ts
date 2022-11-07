@@ -2,6 +2,7 @@
 import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
+import { TopicId } from "../rj/topic_id";
 
 export const protobufPackage = "rj.rj";
 
@@ -18,6 +19,12 @@ export interface QueryGetSectionIdRequest {}
 
 export interface QueryGetSectionIdResponse {
   SectionId: SectionId | undefined;
+}
+
+export interface QueryGetTopicIdRequest {}
+
+export interface QueryGetTopicIdResponse {
+  TopicId: TopicId | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -241,6 +248,113 @@ export const QueryGetSectionIdResponse = {
   },
 };
 
+const baseQueryGetTopicIdRequest: object = {};
+
+export const QueryGetTopicIdRequest = {
+  encode(_: QueryGetTopicIdRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetTopicIdRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetTopicIdRequest } as QueryGetTopicIdRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetTopicIdRequest {
+    const message = { ...baseQueryGetTopicIdRequest } as QueryGetTopicIdRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetTopicIdRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryGetTopicIdRequest>): QueryGetTopicIdRequest {
+    const message = { ...baseQueryGetTopicIdRequest } as QueryGetTopicIdRequest;
+    return message;
+  },
+};
+
+const baseQueryGetTopicIdResponse: object = {};
+
+export const QueryGetTopicIdResponse = {
+  encode(
+    message: QueryGetTopicIdResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TopicId !== undefined) {
+      TopicId.encode(message.TopicId, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetTopicIdResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTopicIdResponse,
+    } as QueryGetTopicIdResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TopicId = TopicId.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTopicIdResponse {
+    const message = {
+      ...baseQueryGetTopicIdResponse,
+    } as QueryGetTopicIdResponse;
+    if (object.TopicId !== undefined && object.TopicId !== null) {
+      message.TopicId = TopicId.fromJSON(object.TopicId);
+    } else {
+      message.TopicId = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTopicIdResponse): unknown {
+    const obj: any = {};
+    message.TopicId !== undefined &&
+      (obj.TopicId = message.TopicId
+        ? TopicId.toJSON(message.TopicId)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTopicIdResponse>
+  ): QueryGetTopicIdResponse {
+    const message = {
+      ...baseQueryGetTopicIdResponse,
+    } as QueryGetTopicIdResponse;
+    if (object.TopicId !== undefined && object.TopicId !== null) {
+      message.TopicId = TopicId.fromPartial(object.TopicId);
+    } else {
+      message.TopicId = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -249,6 +363,8 @@ export interface Query {
   SectionId(
     request: QueryGetSectionIdRequest
   ): Promise<QueryGetSectionIdResponse>;
+  /** Queries a TopicId by index. */
+  TopicId(request: QueryGetTopicIdRequest): Promise<QueryGetTopicIdResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -269,6 +385,14 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("rj.rj.Query", "SectionId", data);
     return promise.then((data) =>
       QueryGetSectionIdResponse.decode(new Reader(data))
+    );
+  }
+
+  TopicId(request: QueryGetTopicIdRequest): Promise<QueryGetTopicIdResponse> {
+    const data = QueryGetTopicIdRequest.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Query", "TopicId", data);
+    return promise.then((data) =>
+      QueryGetTopicIdResponse.decode(new Reader(data))
     );
   }
 }

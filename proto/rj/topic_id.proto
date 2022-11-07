@@ -1,0 +1,9 @@
+syntax = "proto3";
+package rj.rj;
+
+option go_package = "rj/x/rj/types";
+
+message TopicId {
+  uint64 topicId = 1; 
+  
+}

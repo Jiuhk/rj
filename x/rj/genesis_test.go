@@ -17,6 +17,9 @@ func TestGenesis(t *testing.T) {
 		SectionId: &types.SectionId{
 			SectionId: 76,
 		},
+		TopicId: &types.TopicId{
+			TopicId: 44,
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -29,5 +32,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.Equal(t, genesisState.SectionId, got.SectionId)
+	require.Equal(t, genesisState.TopicId, got.TopicId)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

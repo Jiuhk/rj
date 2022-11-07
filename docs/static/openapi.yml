@@ -30325,6 +30325,42 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /rj/rj/topic_id:
+    get:
+      summary: Queries a TopicId by index.
+      operationId: RjRjTopicId
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TopicId:
+                type: object
+                properties:
+                  topicId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /tendermint/spn/monitoringp/connection_channel_id:
     get:
       summary: Queries a ConnectionChannelID by index.
@@ -51927,6 +51963,15 @@ definitions:
           sectionId:
             type: string
             format: uint64
+  rj.rj.QueryGetTopicIdResponse:
+    type: object
+    properties:
+      TopicId:
+        type: object
+        properties:
+          topicId:
+            type: string
+            format: uint64
   rj.rj.QueryParamsResponse:
     type: object
     properties:
@@ -51938,6 +51983,12 @@ definitions:
     type: object
     properties:
       sectionId:
+        type: string
+        format: uint64
+  rj.rj.TopicId:
+    type: object
+    properties:
+      topicId:
         type: string
         format: uint64
   tendermint.spn.monitoringp.ConnectionChannelID:

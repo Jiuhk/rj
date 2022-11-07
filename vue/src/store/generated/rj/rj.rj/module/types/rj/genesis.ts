@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params } from "../rj/params";
 import { SectionId } from "../rj/section_id";
+import { TopicId } from "../rj/topic_id";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "rj.rj";
@@ -8,8 +9,9 @@ export const protobufPackage = "rj.rj";
 /** GenesisState defines the rj module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   sectionId: SectionId | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  topicId: TopicId | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -21,6 +23,9 @@ export const GenesisState = {
     }
     if (message.sectionId !== undefined) {
       SectionId.encode(message.sectionId, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.topicId !== undefined) {
+      TopicId.encode(message.topicId, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -37,6 +42,9 @@ export const GenesisState = {
           break;
         case 2:
           message.sectionId = SectionId.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.topicId = TopicId.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -58,6 +66,11 @@ export const GenesisState = {
     } else {
       message.sectionId = undefined;
     }
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = TopicId.fromJSON(object.topicId);
+    } else {
+      message.topicId = undefined;
+    }
     return message;
   },
 
@@ -68,6 +81,10 @@ export const GenesisState = {
     message.sectionId !== undefined &&
       (obj.sectionId = message.sectionId
         ? SectionId.toJSON(message.sectionId)
+        : undefined);
+    message.topicId !== undefined &&
+      (obj.topicId = message.topicId
+        ? TopicId.toJSON(message.topicId)
         : undefined);
     return obj;
   },
@@ -83,6 +100,11 @@ export const GenesisState = {
       message.sectionId = SectionId.fromPartial(object.sectionId);
     } else {
       message.sectionId = undefined;
+    }
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = TopicId.fromPartial(object.topicId);
+    } else {
+      message.topicId = undefined;
     }
     return message;
   },

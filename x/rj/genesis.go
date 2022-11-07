@@ -13,6 +13,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.SectionId != nil {
 		k.SetSectionId(ctx, *genState.SectionId)
 	}
+	// Set if defined
+	if genState.TopicId != nil {
+		k.SetTopicId(ctx, *genState.TopicId)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -26,6 +30,11 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	sectionId, found := k.GetSectionId(ctx)
 	if found {
 		genesis.SectionId = &sectionId
+	}
+	// Get all topicId
+	topicId, found := k.GetTopicId(ctx)
+	if found {
+		genesis.TopicId = &topicId
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

@@ -25,6 +25,9 @@ func TestGenesisState_Validate(t *testing.T) {
 				SectionId: &types.SectionId{
 					SectionId: 44,
 				},
+				TopicId: &types.TopicId{
+					TopicId: 20,
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
