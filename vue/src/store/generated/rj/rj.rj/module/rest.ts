@@ -13,6 +13,10 @@ export interface ProtobufAny {
   "@type"?: string;
 }
 
+export interface RjMsgCreatePostResponse {
+  postId?: string;
+}
+
 export interface RjMsgCreateTopicResponse {
   topicId?: string;
 }

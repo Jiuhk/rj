@@ -8,6 +8,7 @@ option go_package = "rj/x/rj/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateTopic(MsgCreateTopic) returns (MsgCreateTopicResponse);
+  rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -19,6 +20,16 @@ message MsgCreateTopic {
 
 message MsgCreateTopicResponse {
   string topicId = 1;
+}
+
+message MsgCreatePost {
+  string creator = 1;
+  uint64 topicId = 2;
+  string content = 3;
+}
+
+message MsgCreatePostResponse {
+  string postId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

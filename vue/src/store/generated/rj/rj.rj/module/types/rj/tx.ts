@@ -14,6 +14,16 @@ export interface MsgCreateTopicResponse {
   topicId: string;
 }
 
+export interface MsgCreatePost {
+  creator: string;
+  topicId: number;
+  content: string;
+}
+
+export interface MsgCreatePostResponse {
+  postId: string;
+}
+
 const baseMsgCreateTopic: object = { creator: "", sectionId: 0, title: "" };
 
 export const MsgCreateTopic = {
@@ -163,10 +173,160 @@ export const MsgCreateTopicResponse = {
   },
 };
 
+const baseMsgCreatePost: object = { creator: "", topicId: 0, content: "" };
+
+export const MsgCreatePost = {
+  encode(message: MsgCreatePost, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.topicId !== 0) {
+      writer.uint32(16).uint64(message.topicId);
+    }
+    if (message.content !== "") {
+      writer.uint32(26).string(message.content);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreatePost {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreatePost } as MsgCreatePost;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.topicId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.content = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreatePost {
+    const message = { ...baseMsgCreatePost } as MsgCreatePost;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = Number(object.topicId);
+    } else {
+      message.topicId = 0;
+    }
+    if (object.content !== undefined && object.content !== null) {
+      message.content = String(object.content);
+    } else {
+      message.content = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreatePost): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.topicId !== undefined && (obj.topicId = message.topicId);
+    message.content !== undefined && (obj.content = message.content);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreatePost>): MsgCreatePost {
+    const message = { ...baseMsgCreatePost } as MsgCreatePost;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.topicId !== undefined && object.topicId !== null) {
+      message.topicId = object.topicId;
+    } else {
+      message.topicId = 0;
+    }
+    if (object.content !== undefined && object.content !== null) {
+      message.content = object.content;
+    } else {
+      message.content = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreatePostResponse: object = { postId: "" };
+
+export const MsgCreatePostResponse = {
+  encode(
+    message: MsgCreatePostResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreatePostResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreatePostResponse } as MsgCreatePostResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.postId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreatePostResponse {
+    const message = { ...baseMsgCreatePostResponse } as MsgCreatePostResponse;
+    if (object.postId !== undefined && object.postId !== null) {
+      message.postId = String(object.postId);
+    } else {
+      message.postId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreatePostResponse): unknown {
+    const obj: any = {};
+    message.postId !== undefined && (obj.postId = message.postId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreatePostResponse>
+  ): MsgCreatePostResponse {
+    const message = { ...baseMsgCreatePostResponse } as MsgCreatePostResponse;
+    if (object.postId !== undefined && object.postId !== null) {
+      message.postId = object.postId;
+    } else {
+      message.postId = "";
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateTopic(request: MsgCreateTopic): Promise<MsgCreateTopicResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreatePost(request: MsgCreatePost): Promise<MsgCreatePostResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -179,6 +339,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("rj.rj.Msg", "CreateTopic", data);
     return promise.then((data) =>
       MsgCreateTopicResponse.decode(new Reader(data))
+    );
+  }
+
+  CreatePost(request: MsgCreatePost): Promise<MsgCreatePostResponse> {
+    const data = MsgCreatePost.encode(request).finish();
+    const promise = this.rpc.request("rj.rj.Msg", "CreatePost", data);
+    return promise.then((data) =>
+      MsgCreatePostResponse.decode(new Reader(data))
     );
   }
 }
