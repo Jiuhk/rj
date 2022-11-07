@@ -16,6 +16,11 @@ func (k msgServer) CreateTopic(goCtx context.Context, msg *types.MsgCreateTopic)
 		panic("NextTopicId not found")
 	}
 
+	sectionTopics, found := k.Keeper.GetSectionTopic(ctx, msg.SectionId)
+	if !found {
+		panic("Section not found")
+	}
+
 	newTopic := types.Topic{
 		TopicId:	newTopicId.TopicId,
 		SectionId:	msg.SectionId,
@@ -26,6 +31,18 @@ func (k msgServer) CreateTopic(goCtx context.Context, msg *types.MsgCreateTopic)
 	}
 
 	k.Keeper.SetTopic(ctx, newTopic)
+
+	newSectionTopics := append(sectionTopics.Topics, newTopicId.TopicId)
+	k.Keeper.SetSectionTopic(ctx, types.SectionTopic{
+		SectionId:	msg.SectionId,
+		Topics:		newSectionTopics,
+	})
+
+	k.Keeper.SetTopicPost(ctx, types.TopicPost{
+		TopicId:	newTopicId.TopicId,
+		Posts:		[]uint64{},
+	})
+
 	newTopicId.TopicId++
 	k.Keeper.SetTopicId(ctx, newTopicId)
 
